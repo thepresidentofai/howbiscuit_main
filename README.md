@@ -27,7 +27,7 @@ Build settings:
 
 ## First Launch Checklist
 
-- Create GitHub repo `thepresidentofai/howbiscuit-site`.
+- GitHub repo: `thepresidentofai/howbiscuit_main`.
 - Push this repo to `main`.
 - Create Cloudflare Pages project `howbiscuit`.
 - Attach `howbiscuit.com` and `www.howbiscuit.com`.
