@@ -1,0 +1,49 @@
+---
+title: Biscuit Field Guide
+description: A plain-language explainer shell for How Biscuit articles, divisions, and trust pages.
+kind: home
+template: splash
+hero:
+  tagline: How Biscuit publishes answer-first explainers across practical everyday topics.
+  actions:
+    - text: Read the starter articles
+      link: /articles/how-does-baking-powder-work/
+      icon: right-arrow
+    - text: Editorial policy
+      link: /editorial-policy/
+      variant: secondary
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+How Biscuit is now organized as the Biscuit Field Guide: short answers first, useful context second, and clear trust signals wherever an answer relies on evidence, judgment, money, or safety.
+
+<CardGrid>
+  <Card title="Math" icon="seti:math">
+    Practical number sense, estimates, formulas, and plain-English problem solving.
+  </Card>
+  <Card title="Research & Writing" icon="open-book">
+    Better questions, better sources, clearer drafts, and explanation craft.
+  </Card>
+  <Card title="Cooking" icon="star">
+    Everyday kitchen science, substitutions, timing, and ingredient behavior.
+  </Card>
+  <Card title="Home Tech" icon="setting">
+    Household devices, connectivity, troubleshooting, and basic digital upkeep.
+  </Card>
+  <Card title="Make-Do Lab" icon="pencil">
+    Low-cost fixes, safe improvisation, and practical tradeoff notes.
+  </Card>
+  <Card title="Tools" icon="rocket">
+    Calculators, checklists, field notes, and decision aids as they are added.
+  </Card>
+</CardGrid>
+
+## Starter Articles
+
+- [How Does Baking Powder Work?](/articles/how-does-baking-powder-work/)
+- [Why Are Some Answers Better Than Others?](/articles/why-are-some-answers-better-than-others/)
+
+## Publishing Standard
+
+The shell is ready for new articles, but this build intentionally keeps the article set small. New public claims should point to a source, an observable test, or a clear reasoning trail before publication.

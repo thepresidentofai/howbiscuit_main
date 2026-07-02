@@ -1,0 +1,6 @@
+---
+const { level = 'low', label } = Astro.props;
+const text = label ?? `${level} risk`;
+---
+
+<span class={`hb-badge hb-risk hb-risk-${level}`}>{text}</span>

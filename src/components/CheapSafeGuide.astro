@@ -1,0 +1,8 @@
+---
+const { title = 'Cheap and safe path' } = Astro.props;
+---
+
+<section class="hb-callout hb-cheap-safe" aria-labelledby="cheap-safe-title">
+  <h2 id="cheap-safe-title" class="hb-callout-title">{title}</h2>
+  <slot />
+</section>
