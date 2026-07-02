@@ -6,8 +6,8 @@ export default defineConfig({
   integrations: [
     starlight({
       title: 'How Biscuit',
-      description: 'Plain-language explainers from the Biscuit Field Guide.',
-      customCss: ['./src/styles/biscuit-field-guide.css'],
+      description: 'Plain answers for school, cooking, home tech, and making do.',
+      customCss: ['./src/styles/biscuit.css'],
       editLink: {
         baseUrl: 'https://github.com/thepresidentofai/howbiscuit_main/edit/main/',
       },
@@ -16,11 +16,12 @@ export default defineConfig({
           label: 'Biscuit Field Guide',
           items: [
             { label: 'Start Here', slug: '' },
+            { label: 'Articles', slug: 'articles' },
             { label: 'Math', slug: 'math' },
             { label: 'Research & Writing', slug: 'research-writing' },
-            { label: 'Cooking', slug: 'cooking' },
+            { label: 'Cooking', slug: 'cook' },
             { label: 'Home Tech', slug: 'home-tech' },
-            { label: 'Make-Do Lab', slug: 'make-do-lab' },
+            { label: 'Make-Do Lab', slug: 'make-do' },
             { label: 'Tools', slug: 'tools' },
           ],
         },
@@ -35,6 +36,14 @@ export default defineConfig({
               label: 'Why Are Some Answers Better Than Others?',
               slug: 'articles/why-are-some-answers-better-than-others',
             },
+          ],
+        },
+        {
+          label: 'More',
+          items: [
+            { label: 'Buying Guides', slug: 'buying-guides' },
+            { label: 'Everyday Science', slug: 'science' },
+            { label: 'Glossary', slug: 'glossary' },
           ],
         },
         {

@@ -2,7 +2,7 @@
 const { title = 'Common mistakes' } = Astro.props;
 ---
 
-<section class="hb-callout hb-common-mistakes" aria-labelledby="common-mistakes-title">
-  <h2 id="common-mistakes-title" class="hb-callout-title">{title}</h2>
+<section class="hb-box" data-variant="common-mistake" aria-labelledby="common-mistakes-title">
+  <h2 id="common-mistakes-title" class="hb-box-label">{title}</h2>
   <slot />
 </section>

@@ -6,10 +6,13 @@ import { docsSchema } from '@astrojs/starlight/schema';
 const divisionSchema = z.enum([
   'math',
   'research-writing',
-  'cooking',
+  'cook',
   'home-tech',
-  'make-do-lab',
+  'make-do',
   'tools',
+  'buying-guides',
+  'science',
+  'glossary',
 ]);
 
 export const collections = {

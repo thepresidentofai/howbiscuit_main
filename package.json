@@ -9,11 +9,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "lint:content": "node scripts/lint-content.mjs",
-    "qa": "astro check && node scripts/lint-content.mjs"
+    "qa": "astro check && astro build && node scripts/lint-content.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",

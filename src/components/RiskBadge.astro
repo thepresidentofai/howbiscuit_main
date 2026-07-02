@@ -1,6 +1,7 @@
 ---
-const { level = 'low', label } = Astro.props;
-const text = label ?? `${level} risk`;
+const allowed = new Set(['Green', 'Yellow', 'Orange', 'Red']);
+const { value = 'Green', label } = Astro.props as { value?: string; label?: string };
+const text = allowed.has(value) ? value : 'Green';
 ---
 
-<span class={`hb-badge hb-risk hb-risk-${level}`}>{text}</span>
+<span class={`hb-badge hb-risk hb-risk-${text.toLowerCase()}`}>{label ?? text}</span>

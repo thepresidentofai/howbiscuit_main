@@ -4,15 +4,20 @@ import path from 'node:path';
 
 const root = process.cwd();
 const docsRoot = path.join(root, 'src', 'content', 'docs');
+const distRoot = path.join(root, 'dist');
 
 const requiredDocs = [
   'index.mdx',
   'math/index.mdx',
   'research-writing/index.mdx',
-  'cooking/index.mdx',
+  'cook/index.mdx',
   'home-tech/index.mdx',
-  'make-do-lab/index.mdx',
+  'make-do/index.mdx',
   'tools/index.mdx',
+  'buying-guides/index.mdx',
+  'science/index.mdx',
+  'glossary/index.mdx',
+  'articles/index.mdx',
   'about/index.mdx',
   'editorial-policy/index.mdx',
   'corrections/index.mdx',
@@ -24,6 +29,9 @@ const requiredDocs = [
 ];
 
 const requiredComponents = [
+  'BiscuitBox.astro',
+  'DivisionCard.astro',
+  'ToolPreview.astro',
   'ShortAnswer.astro',
   'CommonMistakes.astro',
   'CheapSafeGuide.astro',
@@ -43,7 +51,16 @@ const forbiddenPublicRoutes = [
 ];
 
 const requiredEndpoints = ['feed.xml.js', 'robots.txt.js', 'sitemap.xml.js'];
-const placeholderPattern = /\b(lorem|todo|tbd|placeholder)\b/i;
+const forbiddenPatterns = [
+  /\bTODO\b/i,
+  /Lorem ipsum/i,
+  /coming soon/i,
+  /placeholder/i,
+  /Insert text here/i,
+  /\bTBD\b/i,
+  /SEO experiment/i,
+  /traffic laboratory/i,
+];
 const errors = [];
 
 function requireFile(relativePath) {
@@ -69,18 +86,37 @@ function frontmatterFor(source, relativePath) {
   return match[1];
 }
 
-async function collectMdxFiles(directory) {
+async function collectFiles(directory, extensions) {
+  if (!existsSync(directory)) return [];
   const entries = await readdir(directory, { withFileTypes: true });
   const files = [];
   for (const entry of entries) {
     const fullPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
-      files.push(...(await collectMdxFiles(fullPath)));
-    } else if (entry.name.endsWith('.mdx')) {
+      files.push(...(await collectFiles(fullPath, extensions)));
+    } else if (extensions.some((extension) => entry.name.endsWith(extension))) {
       files.push(fullPath);
     }
   }
   return files;
+}
+
+function normalizeBuiltMarkup(source) {
+  return source
+    .replaceAll(/placeholder=(["']).*?\1/gi, '')
+    .replaceAll(/&quot;placeholder&quot;:&quot;.*?&quot;/gi, '')
+    .replaceAll(/"placeholder":"[^"]*"/gi, '');
+}
+
+function scanForbidden(source, relativePath) {
+  for (const pattern of forbiddenPatterns) {
+    if (pattern.test(source)) {
+      errors.push(`Forbidden public text matched ${pattern}: ${relativePath}`);
+    }
+  }
+  if (source.includes('href="#articles"') || source.includes("href='#articles'")) {
+    errors.push(`Old homepage #articles link remains: ${relativePath}`);
+  }
 }
 
 for (const doc of requiredDocs) {
@@ -99,7 +135,7 @@ for (const publicRoute of forbiddenPublicRoutes) {
   rejectFile(publicRoute);
 }
 
-const mdxFiles = existsSync(docsRoot) ? await collectMdxFiles(docsRoot) : [];
+const mdxFiles = await collectFiles(docsRoot, ['.mdx']);
 for (const file of mdxFiles) {
   const relativePath = path.relative(root, file).replaceAll(path.sep, '/');
   const source = await readFile(file, 'utf8');
@@ -110,9 +146,14 @@ for (const file of mdxFiles) {
   if (!/description:\s*\S/.test(frontmatter)) {
     errors.push(`Missing description in frontmatter: ${relativePath}`);
   }
-  if (placeholderPattern.test(source)) {
-    errors.push(`Placeholder language found in public content: ${relativePath}`);
-  }
+  scanForbidden(source, relativePath);
+}
+
+const distFiles = await collectFiles(distRoot, ['.html', '.xml', '.txt', '.json']);
+for (const file of distFiles) {
+  const relativePath = path.relative(root, file).replaceAll(path.sep, '/');
+  const source = normalizeBuiltMarkup(await readFile(file, 'utf8'));
+  scanForbidden(source, relativePath);
 }
 
 const feedArticlePaths = [
@@ -136,4 +177,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`Content lint passed for ${mdxFiles.length} MDX pages.`);
+console.log(`Content lint passed for ${mdxFiles.length} MDX pages and ${distFiles.length} built files.`);
